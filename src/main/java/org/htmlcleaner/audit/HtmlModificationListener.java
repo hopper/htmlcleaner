@@ -1,4 +1,4 @@
-/*  
+/*
     Redistribution and use of this software in source and binary forms,
     with or without modification, are permitted provided that the following
     conditions are met:
@@ -40,7 +40,7 @@ import org.htmlcleaner.TagNode;
 /**
  * Implementors can be registered on {@link org.htmlcleaner.CleanerProperties} to receive notifications about
  * modifications made by html cleaner.
- * 
+ *
  * @author Konstantin Burov (aectann@gmail.com)
  *
  */
@@ -48,26 +48,26 @@ public interface HtmlModificationListener {
 
     /**
      * Fired when cleaner fixes some error in html syntax.
-     * 
-     * @param certain - true if change made doesn't hurts end document.
+     *
+     * @param safety - false if the node being removed has an id/name attribute.
      * @param tagNode - problematic node.
      * @param errorType
      */
-    void fireHtmlError(boolean certain, TagNode tagNode, ErrorType errorType);
+    void fireHtmlError(boolean safety, TagNode tagNode, ErrorType errorType);
 
     /**
      * Fired when cleaner fixes ugly html -- when syntax was correct but task was implemented by weird code.
      * For example when deprecated tags are removed.
-     * 
-     * @param certainty - true if change made doesn't hurts end document.
+     *
+     * @param safety - false if the node being removed has an id/name attribute.
      * @param tagNode - problematic node.
      * @param errorType
      */
-    void fireUglyHtml(boolean certainty, TagNode tagNode, ErrorType errorType);
+    void fireUglyHtml(boolean safety, TagNode tagNode, ErrorType errorType);
 
     /**
      * Fired when cleaner modifies html due to {@link ITagNodeCondition} match.
-     * 
+     *
      * @param condition that was applied to make the modification
      * @param tagNode - problematic node.
      */
@@ -75,11 +75,11 @@ public interface HtmlModificationListener {
 
     /**
      * Fired when cleaner modifies html due to user specified rules.
-     * 
-     * @param certainty - true if change made doesn't hurts end document.
+     *
+     * @param safety - false if the node being removed has an id/name attribute.
      * @param tagNode - problematic node.
      * @param errorType
      */
-    void fireUserDefinedModification(boolean certainty, TagNode tagNode, ErrorType errorType);
+    void fireUserDefinedModification(boolean safety, TagNode tagNode, ErrorType errorType);
 
 }

@@ -202,11 +202,11 @@ public class TagInfo {
     }
 
     // getters and setters
-    
+
     public Display getDisplay() {
     	return display;
     }
-    
+
     public void setDisplay(Display display) {
     	this.display = display;
     }
@@ -367,7 +367,7 @@ public class TagInfo {
     }
 
     /**
-     * 
+     *
      * @param token
      * @return true if the passed token is allowed to be nested in a Tag with this TagInfo.
      */
@@ -418,4 +418,8 @@ public class TagInfo {
         return this.closeTag.isMinimizedTagPermitted();
     }
 
+    @Override
+    public String toString() {
+        return "tagInfo:{name:\""+this.name+"\", contentType:"+this.contentType+"}";
+    }
 }

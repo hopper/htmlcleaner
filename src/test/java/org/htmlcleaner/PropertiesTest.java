@@ -147,7 +147,7 @@ public class PropertiesTest extends TestCase {
         assertTrue( getXmlString(cleaner, properties).indexOf("<!--my comment-->") >= 0 );
         properties.setOmitComments(true);
         assertTrue( getXmlString(cleaner, properties).indexOf("<!--my comment-->") < 0 );
-        
+
         properties.setOmitComments(false);
         assertTrue( getXmlString(cleaner, properties).indexOf("<!-- comment with == - hyphen -->") >= 0 );
         properties.setHyphenReplacementInComment("*");
@@ -194,6 +194,28 @@ public class PropertiesTest extends TestCase {
         properties.setBooleanAttributeValues("selft");
         assertTrue( getXmlString(cleaner, properties).indexOf("<input checked=\"checked\" />") >= 0 );
     }
+    public void testStringsInStyle() {
+        HtmlCleaner cleaner = new HtmlCleaner();
+        CleanerProperties properties = cleaner.getProperties();
+        properties.setOmitDoctypeDeclaration(true);
+        properties.setOmitHtmlEnvelope(false);
+        final String htmlContent = "<html>\r\n<head><style media=\"all\" type=\"text/css\">\r\n" +
+        "@import \"cgmountainview_com_MENUS_files/all.css\";\r\n" +
+        "\r\n" +
+        ".style1 {\r\n" +
+        " color: #006633;\r\n" +
+        " font-weight: bold;\r\n" +
+        "}\r\n" +
+        "\r\n" +
+        ".SUBHEAD_maroon {\r\n" +
+        " color: #600;\r\n" +
+        "}\r\n" +
+        "</style></head>\r\n" +
+        "<body></body></html>";
+        TagNode node = cleaner.clean(htmlContent);
+        String xmlString = new SimpleXmlSerializer(properties).getXmlAsString(node);
+        assertEquals(htmlContent, xmlString);
+    }
 
     private String getXmlString(HtmlCleaner cleaner, CleanerProperties properties) throws IOException {
         TagNode node = cleaner.clean( new File("src/test/resources/test4.html"), "UTF-8" );
@@ -222,8 +244,8 @@ public class PropertiesTest extends TestCase {
         // then test when generating html
         String domString = simpleXmlSerializer.getXmlAsString(node, "UTF-8" );
         assertEquals("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n" +
-//            "<html><head /><body><div> &amp;&quot;&#39;&#39;&lt;&gt;&nbsp;&amp;garbage;&amp;</div></body></html>", 
-            "<html><head /><body><div> &amp;&quot;''&lt;&gt;&nbsp;&amp;garbage;&amp;</div></body></html>", 
+//            "<html><head /><body><div> &amp;&quot;&#39;&#39;&lt;&gt;&nbsp;&amp;garbage;&amp;</div></body></html>",
+            "<html><head /><body><div> &amp;&quot;''&lt;&gt;&nbsp;&amp;garbage;&amp;</div></body></html>",
                 domString.trim());
     }
 
@@ -318,7 +340,7 @@ public class PropertiesTest extends TestCase {
             }
         }
     }
-    
+
     public void testConvertUnicode() throws Exception {
         CleanerProperties cleanerProperties = new CleanerProperties();
         cleanerProperties.setOmitHtmlEnvelope(true);
@@ -328,13 +350,13 @@ public class PropertiesTest extends TestCase {
         String output = new SimpleXmlSerializer().getXmlAsString(cleanerProperties, "<h3><u><strong>President’s Message</strong></u><div> </h3>", "UTF-8");
         assertEquals("<h3><u><strong>President’s Message</strong></u><div> </div></h3>", output);
     }
-    
+
     private static final String HTML_COMMENT_OUT_BEGIN = "<html><head><script>";
     private static final String HTML_COMMENT_OUT_END = "</script></head><body></body></html>";
     private static final String SAMPLE_JS = "var x = ['foo','bar'];";
     private static final String COMMENT_START = "<!--";
     private static final String COMMENT_END = "-->";
-    
+
     /**
      * Test conversion of former ( now bad practice ) of:
      * <pre>
@@ -342,7 +364,7 @@ public class PropertiesTest extends TestCase {
      * </pre>
      * into
      * &lt;style>/(star)&lt;![CDATA[(star)/ style info /(star)]]>(star)/&lt;/style>
-     * 
+     *
      * Note: disabled because it doesn't test actual behavior
      */
     public void disabledTestConvertOldStyleComments() {
@@ -363,11 +385,11 @@ public class PropertiesTest extends TestCase {
                 // don't let random whitespace confuse things
             new String[] { HTML_COMMENT_OUT_BEGIN+"\n\n\n\n"+"//"+"   \t"+COMMENT_START+"\n"+SAMPLE_JS+"\n\n\n"+"//"+COMMENT_END+"\n\n\t\n"+HTML_COMMENT_OUT_END,
                 HTML_COMMENT_OUT_BEGIN+"\n\n\n\n"+XmlSerializer.SAFE_BEGIN_CDATA+"\n"+SAMPLE_JS+"\n\n\n"+"//"+XmlSerializer.SAFE_END_CDATA +"\n\n\t\n"+HTML_COMMENT_OUT_END},
-                
+
             }) {
             doTestConvertOldStyleComments(cleaner, properties, testData);
         }
-        
+
         // test for false positives
         for(String[] testData: new String[][] {
             // make sure not to remove real comments
@@ -394,14 +416,14 @@ public class PropertiesTest extends TestCase {
         xmlString = new SimpleXmlSerializer(properties).getXmlAsString(node);
         assertEquals(testData[1], xmlString);
     }
-    
+
     public void testIgnoreClosingCData() {
-        String html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" + 
+        String html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
         		"<html xmlns=\"http://www.w3.org/1999/xhtml\"><head><meta http-equiv=\"content-type\" content=\"application/xhtml+xml; charset=utf-8\" /><link href=\"aswa.css\" type=\"text/css\" rel=\"stylesheet\" /><title>ASWA - Events</title>" +
-        		"<style type=\"text/css\">/*<![CDATA[*/\r\n" + 
-        		"#ampmep_188 { }\r\n" + 
+        		"<style type=\"text/css\">/*<![CDATA[*/\r\n" +
+        		"#ampmep_188 { }\r\n" +
         		"/*]]>*/</style></head><body></body></html>";
-        
+
         CleanerProperties properties = new CleanerProperties();
         properties.setOmitXmlDeclaration(true);
         properties.setUseCdataForScriptAndStyle(true);

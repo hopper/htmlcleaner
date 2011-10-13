@@ -1,0 +1,357 @@
+* html #main{height:100%;}
+#main{
+	width: 802px;
+	background: #fff url(../images/body-bg.gif) repeat-y;
+	padding: 0 49px 0 0;
+	margin: 0 auto;
+	min-height:100%;
+}
+a{
+	text-decoration: none;
+}
+a:hover{
+	text-decoration: none;
+	padding-bottom: 15px;
+	padding: 10;
+	padding-top: 40px;
+}
+body{
+	font: 14px "Times New Roman", Times, serif;
+	color: #000;
+	margin: 0;
+	height: 100%;
+	padding: 5;
+}
+h2.wellcome{
+	font-size: 13px;
+	font-weight: normal;
+	margin: 7px 0 0;
+	overflow: hidden;
+}
+h2.wellcome a{
+	float: left;
+	background: url(../images/center-logo.jpg);
+	width: 231px;
+	height: 130px;
+	overflow: hidden;
+	text-indent: -9999px;
+	margin: 8px 0 0 180px;
+}
+h2.wellcome span{
+	display: block;
+}
+html{
+	height: 100%;
+}
+ul{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+ul.images{
+	width: 100%;
+	overflow: hidden;
+}
+ul.images img{
+	display: block;
+}
+ul.images li{
+	float: left;
+	overflow: hidden;
+	display: block;
+	margin-top: 0;
+	margin-right: 5px;
+	margin-bottom: 0px;
+	margin-left: 5px;
+	max-width: 80%;
+}
+.content{
+	float: right;
+	width: 577px;
+	background: #fff;
+	text-align: center;
+	border-top: 0;
+	margin-top: 10px;
+	margin-right: 5px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding-top: 10;
+	padding-right: 0;
+	padding-bottom: 0;
+	padding-left: 0;
+}
+.content h3{
+	font-size: 20px;
+	font-weight: normal;
+	margin: 0 0 8px;
+}
+.content h3 a{
+	color: #063;
+}
+.content p{
+	margin: 10px 50px 7px 10px;
+	line-height: 21px;
+	clear: both;
+}
+.content p left { line-height: 21px; margin: 10px 230px 7px 40px; clear: both; }
+.nav{
+	width: 590px;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+}
+.nav li{
+	display: inline;
+	padding: 0 8px;
+}
+/*<agl.folder "rewards">*/
+	#rewards { background-image: url(file:///Users/jenniferv/Documents/COUNTRY_GOURMET_0708/PSD2HTML/fromPSD2HTML/CountryGourmet_working/images/nav-bg_rewards.jpg); background-repeat: no-repeat; background-attachment: scroll; background-position: 100% 0; width: 100%; overflow: hidden; }
+	#rewards .nav{
+	float: right;
+	display: inline;
+	margin: 108px 0 0;
+}
+	#rewards .nav a{
+	color: #600;
+}
+	#rewards .nav a:hover{
+	color: #093;
+	text-decoration: none;
+}
+	#rewards h1.logo{
+	margin: 0;
+	background: url(../images/logo.jpg) no-repeat;
+	width: 212px;
+	height: 127px;
+	text-indent: -9999px;
+	float: left;
+}
+	#rewards h1.logo a{
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+/*</agl.folder>*/
+/*<agl.folder "SIDEBAR">*/
+	.sidebar{
+	float: left;
+	width: 212px;
+}
+	.sidebar address{
+	font-size: 16px;
+	padding: 0 0 0 12px;
+	margin: 0;
+	font-style: normal;
+	color: #063;
+}
+	.sidebar address strong{
+	color: #600;
+}
+	.sidebar img{
+	display: inline;
+	margin: 0px;
+}
+	.sidebar ul{
+	padding: 0 0 0 12px;
+	margin: 55px 0 0;
+	font-size: 14px;
+	font-weight: bold;
+}
+	.sidebar ul a{
+	color: #600;
+}
+	.sidebar ul li{
+	margin: 0 0 20px;
+}
+/*</agl.folder>*/
+.warning{
+	width: 558px;
+	color: #fff;
+	font-weight: normal;
+	text-align: center;
+	overflow: hidden;
+	float: right;
+	display: block;
+	margin-top: 10px;
+	margin-right: 0;
+	margin-bottom: 0;
+	margin-left: 0px;
+	background-color: #ec743c;
+	clear: both;
+	padding-top: 0px;
+	padding-right: 10px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+}
+.warning *{
+	margin: 0;
+}
+.warning h3{
+	font-size: 22px;
+	font-weight: bold;
+}
+.warning span{
+	font-size: 18px;
+	line-height: 18px;
+}
+#center{
+	width: 100%;
+	overflow: hidden;
+}
+/*<agl.folder "FOOTER">*/
+	#footer{
+	width: 590px;
+	background: #fff;
+	text-align: center;
+	overflow: hidden;
+	display: block;
+	margin-top: 0;
+	margin-right: 0;
+	margin-bottom: 0;
+	margin-left: 212px;
+	clear: none;
+}
+	#footer .nav{
+	margin: 7px 0 0;
+}
+	#footer .nav a{
+	color: #903;
+}
+	#footer .nav a:hover{
+	color: #093;
+	text-decoration: none;
+}
+	#footer p{
+	color: #696;
+	font-size: 10px;
+	font-weight: bold;
+	margin: 10px 0;
+}
+/*</agl.folder>*/
+/*<agl.folder "HEADER.main">*/
+	#header{
+	width: 100%;
+	overflow: hidden;
+	background: url(../images/nav-bg.jpg) 100% 0 no-repeat;
+}
+	#rewards { background-image: url(../images/nav-bg_rewards.jpg); background-repeat: no-repeat; background-attachment: scroll; background-position: 100% 0; width: 100%; overflow: hidden; }
+	#menus { background-image: url(../images/nav-bg-menus.jpg); background-repeat: no-repeat; background-attachment: scroll; background-position: 100% 0; width: 100%; overflow: hidden; }
+	#header .nav{
+	float: right;
+	display: inline;
+	margin: 108px 0 0;
+}
+	#header .nav a{
+	color: #600;
+}
+	#header .nav a:hover{
+	color: #093;
+	text-decoration: none;
+}
+	#header .nav a:onclick { color: #093; }
+	#header h1.logo{
+	margin: 0;
+	background: url(../images/logo.jpg) no-repeat;
+	width: 212px;
+	height: 127px;
+	text-indent: -9999px;
+	float: left;
+}
+	#header h1.logo a{
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+/*</agl.folder>*/
+/*<agl.folder "menus">*/
+	#menus { background-image: url(../images/nav-bg-menus.jpg); background-repeat: no-repeat; background-attachment: scroll; background-position: 100% 0; width: 100%; overflow: hidden; }
+	#menus .nav{
+	float: right;
+	display: inline;
+	margin: 108px 0 0;
+}
+	#menus .nav a{
+	color: #600;
+}
+	#menus .nav a:hover{
+	color: #093;
+	text-decoration: none;
+}
+	#menus .nav a:onclick { color: #093; }
+	#menus h1.logo{
+	margin: 0;
+	background: url(../images/logo.jpg) no-repeat;
+	width: 212px;
+	height: 127px;
+	text-indent: -9999px;
+	float: left;
+}
+	#menus h1.logo a{
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+/*</agl.folder>*/
+/*<agl.folder "contact">*/
+	#contact{ background: url(../images/nav-bg_contact.jpg) no-repeat 100% 0; width: 100%; overflow: hidden; }
+	#contact .nav{
+	float: right;
+	display: inline;
+	margin: 108px 0 0;
+}
+	#contact .nav a{
+	color: #600;
+}
+	#contact .nav a:hover{
+	color: #093;
+	text-decoration: none;
+}
+	#contact .nav a:onclick { color: #093; }
+	#contact h1.logo{
+	margin: 0;
+	background: url(../images/logo.jpg) no-repeat;
+	width: 212px;
+	height: 127px;
+	text-indent: -9999px;
+	float: left;
+}
+	#contact h1.logo a{
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+/*</agl.folder>*/
+/*<agl.folder "about">*/
+	#about{ background: url(../images/nav-bg_about.jpg) no-repeat 100% 0; width: 100%; overflow: hidden; }
+	#about .nav{
+	float: right;
+	display: inline;
+	margin: 108px 0 0;
+}
+	#about .nav a{
+	color: #600;
+}
+	#about .nav a:hover{
+	color: #093;
+	text-decoration: none;
+}
+	#about .nav a:onclick { color: #093; }
+	#about h1.logo{
+	margin: 0;
+	background: url(../images/logo.jpg) no-repeat;
+	width: 212px;
+	height: 127px;
+	text-indent: -9999px;
+	float: left;
+}
+	#about h1.logo a{
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+/*</agl.folder>*/

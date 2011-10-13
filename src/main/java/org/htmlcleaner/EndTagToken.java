@@ -48,11 +48,11 @@ import java.io.Writer;
  */
 public class EndTagToken extends TagToken {
 
-    public EndTagToken() {
-    }
-
     public EndTagToken(String name) {
-        super(name == null ? null : name.toLowerCase());
+        this(name, -1, -1);
+    }
+    public EndTagToken(String name, int row, int col) {
+        super(name == null ? null : name.toLowerCase(), row, col);
     }
 
     @Override

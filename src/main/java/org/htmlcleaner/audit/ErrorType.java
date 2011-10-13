@@ -1,4 +1,4 @@
-/*  
+/*
     Redistribution and use of this software in source and binary forms,
     with or without modification, are permitted provided that the following
     conditions are met:
@@ -72,12 +72,13 @@ public enum ErrorType {
      * Unclosed &lt;p> tag.
      */
     UnclosedTag,
+    ForcedClosingOfTag,
     /**
      * Second instance of an unique tag was found, most likely it was removed.
      * <p>
      * <b>Example:</b>
      * <p>
-     * 
+     *
      * <pre>
      * &lt;head>
      *    &lt;title>Some text&lt;/title>

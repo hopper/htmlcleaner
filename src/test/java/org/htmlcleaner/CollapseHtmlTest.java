@@ -8,23 +8,23 @@ import junit.framework.TestCase;
 public class CollapseHtmlTest extends TestCase {
 
     /**
-     * 
+     *
      */
     private static final String CANNOT_ELIMINATE_ANYTHING_IN_THIS_TR = "<tr><td></td><td>Cannot eliminate anything in this row</td></tr>";
 
     /**
-     * 
+     *
      */
     private static final String IMAGE = "<img src=\"http://localhost:8080/img/foo.jpg\" />";
 
     /**
-     * 
+     *
      */
     private static final String DONT_COLLAPSE =
         "<span>" + IMAGE  +"</span>" +
         "<p>" + IMAGE +"</p>" +
     		"<p>bar<table><tr><td></td><td>"+IMAGE+"</td><td> </td></tr></table>foo</p>";
-    private static final String DONT_COLLAPSE_OUTPUT = 
+    private static final String DONT_COLLAPSE_OUTPUT =
     "<span>" + IMAGE +"</span>" +
     "<p>" +IMAGE +"</p>" +
     "<p>bar</p><table><tbody><tr><td></td><td>"+IMAGE+"</td><td> </td></tr></tbody></table><p>foo</p>";
@@ -86,7 +86,7 @@ public class CollapseHtmlTest extends TestCase {
     public void testCollapseMultipleEmptyTags() {
         TagNode collapsed = cleaner.clean("<b><i><u></u></i></b>");
         assertEquals("", serializer.getXmlAsString(collapsed));
-        
+
         // test with slightly bad html.
         collapsed = cleaner.clean("<b><i><u></i></u></b>");
         assertEquals("", serializer.getXmlAsString(collapsed));
@@ -110,7 +110,7 @@ public class CollapseHtmlTest extends TestCase {
         collapsed = cleaner.clean("Some text<BR/>");
         assertEquals("Some text", serializer.getXmlAsString(collapsed));
     }
-    
+
     /**
      * make sure TagTransformations do not interfere with collapse
      */
@@ -145,7 +145,7 @@ public class CollapseHtmlTest extends TestCase {
         assertEquals("<p>Some text</p>", serializer.getXmlAsString(collapsed));
         collapsed = cleaner.clean("<p>Some text<br><span></span><BR/><u><big></big></u><BR/><u></u></p>");
         assertEquals("<p>Some text</p>", serializer.getXmlAsString(collapsed));
-        
+
     }
     /**
      * Br nested in formating elements should be eliminated.
@@ -154,7 +154,7 @@ public class CollapseHtmlTest extends TestCase {
         TagNode collapsed = cleaner.clean("<p><u><br/></u>Some text<br><span><BR/><u><big><BR/></big></u></p></span>");
         assertEquals("<p>Some text</p>", serializer.getXmlAsString(collapsed));
     }
-    
+
     /**
      * because elements with ids can be referred to by javascript, don't assume that such elements can be eliminated.
      */
@@ -165,6 +165,9 @@ public class CollapseHtmlTest extends TestCase {
         assertEquals("<b id=\"notme\"></b><span id=\"norme\"></span>", serializer.getXmlAsString(collapsed));
     }
 
+    /**
+     * Look to remove elements that have empty content and no id's.
+     */
     public void testCollapseAggressively() {
         properties.addPruneTagNodeCondition(new TagNodeEmptyContentCondition(properties.getTagInfoProvider()));
         TagNode collapsed;
@@ -181,4 +184,21 @@ public class CollapseHtmlTest extends TestCase {
         		"</tbody></table>", serializer
                 .getXmlAsString(collapsed));
     }
+/*
+    public void testStrong() {
+        TagNode collapsed;
+        cleaner.getProperties().addHtmlModificationListener(new HtmlModificationListenerLogger(Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)));
+        collapsed =cleaner.clean("<strong><br> <span style=\"font-weight: bold;\"><big><a\n" +
+        		"    href=\"http://www.cgmountainview.com/BREAKFAST_MENU.html\" target=\"_top\">Breakfast\n" +
+        		"Menu<br>\n" +
+        		"</a></big> <br> <big><a\n" +
+        		"    href=\"http://www.cgmountainview.com/LUNCHDINNER_MENU.html\"\n" +
+        		"    target=\"_top\">Lunch and Dinner Menu</a><br> <br> <a\n" +
+        		"    href=\"http://www.cgmountainview.com/DESSERTBEVERAGES_MENU.html\"\n" +
+        		"    target=\"_top\">Dessert &amp; Beverages Menu</a>\n" +
+        		"</big>\n" +
+        		"</span><strong>big ass</strong>");
+        assertEquals("", serializer.getXmlAsString(collapsed));
+    }
+    */
 }

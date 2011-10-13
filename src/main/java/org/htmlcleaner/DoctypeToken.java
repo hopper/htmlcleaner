@@ -54,12 +54,17 @@ public class DoctypeToken extends BaseTokenImpl {
     private String part4;
 
     public DoctypeToken(String part1, String part2, String part3, String part4) {
+        this(part1, part2, part3, part4, -1, -1);
+    }
+    public DoctypeToken(String part1, String part2, String part3, String part4, int row, int col) {
+        super(row, col);
+
         this.part1 = part1 != null ? part1.toUpperCase() : part1;
         this.part2 = part2 != null ? part2.toUpperCase() : part2;
         this.part3 = clean(part3);
         this.part4 = clean(part4);
     }
-    
+
     private String clean(String s) {
     	if (s != null) {
 	    	s = s.replace('>', ' ');

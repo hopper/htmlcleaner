@@ -479,7 +479,7 @@ public class HtmlCleaner {
         // new behavior -- wrap in null TagNode
         if (properties.isOmitHtmlEnvelope()) {
             List bodyChildren = this.bodyNode.getChildren();
-            this.rootNode = new TagNode(null);
+            this.rootNode = newTagNode(null);
             if (bodyChildren != null) {
                 for(Iterator iterator = bodyChildren.iterator(); iterator.hasNext(); ) {
                     Object currChild = iterator.next();
@@ -696,10 +696,10 @@ public class HtmlCleaner {
                 // unknown HTML tag and unknown tags are not allowed
                 } else if ( tag == null && properties.isOmitUnknownTags()) {
                     nodeIterator.set(null);
-                    properties.fireUglyHtml(true, startTagToken, ErrorType.Unknown);
+                    properties.fireUglyHtml(isRemovingNodeReasonablySafe(startTagToken), startTagToken, ErrorType.Unknown);
                 } else if ( tag != null && tag.isDeprecated() && properties.isOmitDeprecatedTags()) {
                     nodeIterator.set(null);
-                    properties.fireUglyHtml(true, startTagToken, ErrorType.Deprecated);
+                    properties.fireUglyHtml(isRemovingNodeReasonablySafe(startTagToken), startTagToken, ErrorType.Deprecated);
                 // if current tag is unknown and last open tag doesn't allow any other tags in its body
                 } else if ( tag == null && lastTagInfo != null && !lastTagInfo.allowsAnything() ) {
                     closeSnippet(nodeList, lastTagPos, startTagToken);
@@ -725,12 +725,12 @@ public class HtmlCleaner {
                     properties.fireHtmlError(true, startTagToken, ErrorType.RequiredParentMissing);
                     // if last open tag has lower presidence then this, it must be closed
                 } else if ( tag != null && lastTagPos != null && tag.isMustCloseTag(lastTagInfo) ) {
-                                        //since tag is closed earlier due to incorrect child tag, we store this info
-                                        //to reopen it later, on the child close.
-                                        getChildBreaks().addBreak(lastTagPos, new TagPos(nodeIterator.previousIndex(), tag.getName()));
-                                        boolean certainty = startTagToken.hasAttribute("id") ? false : true;
-                                        properties.fireHtmlError(certainty, (TagNode)nodeList.get(lastTagPos.position), ErrorType.UnpermittedChild);
-                                        List closed = closeSnippet(nodeList, lastTagPos, startTagToken);
+                    // lastTag is closed because it is not allowed to have "tag" nested inside of it
+                    // store the lastTagInfo so that the closing tag ( if it is ever encountered can be correctly handled ).
+                    getChildBreaks().addBreak(lastTagPos, new TagPos(nodeIterator.previousIndex(), tag.getName()));
+                    final TagNode lastTagStartToken = (TagNode)nodeList.get(lastTagPos.position);
+                    properties.fireHtmlError(isRemovingNodeReasonablySafe(startTagToken), startTagToken, ErrorType.UnpermittedChild);
+                    List closed = closeSnippet(nodeList, lastTagPos, startTagToken);
 					int closedCount = closed.size();
 
 					// it is needed to copy some tags again in front of current, if there are any
@@ -878,6 +878,9 @@ public class HtmlCleaner {
 		while ( (toNode == null && !isListEnd) || (toNode != null && item != toNode) ) {
 			if ( isStartToken(item) ) {
                 TagNode startTagToken = (TagNode) item;
+                if ( !(toNode instanceof EndTagToken)) {
+                    this.properties.fireHtmlError(true, startTagToken, ErrorType.ForcedClosingOfTag);
+                }
                 closed.add(startTagToken);
                 List itemsToMove = startTagToken.getItemsToMove();
                 if (itemsToMove != null) {

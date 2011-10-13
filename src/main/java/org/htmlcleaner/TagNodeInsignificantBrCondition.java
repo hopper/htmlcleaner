@@ -5,24 +5,30 @@ import java.util.List;
 /**
  * Checks if node is an insignificant br tag -- is placed at the end or at the
  * start of a block.
- * 
+ *
+ * For example:
+ * <div><br>...
+ * or
+ * <p><br/>....
+ *
  * @author Konstantin Burov (aectann@gmail.com)
  */
 public class TagNodeInsignificantBrCondition implements ITagNodeCondition {
 
 	private static final String BR_TAG = "br";
-	
+
 	public TagNodeInsignificantBrCondition() {
 	}
 
 	public boolean satisfy(TagNode tagNode) {
-		if (!isBrNode(tagNode)) {
-			return false;
+		if (isBrNode(tagNode)) {
+    		TagNode parent = tagNode.getParent();
+    		List children = parent.getChildren();
+    		int brIndex = children.indexOf(tagNode);
+    		return checkSublist(0, brIndex, children) || checkSublist (brIndex, children.size(), children);
+		} else {
+		    return false;
 		}
-		TagNode parent = tagNode.getParent();
-		List children = parent.getChildren();
-		int brIndex = children.indexOf(tagNode);		
-		return checkSublist(0, brIndex, children) || checkSublist (brIndex, children.size(), children);
 	}
 
 	private boolean isBrNode(TagNode tagNode) {
@@ -41,5 +47,9 @@ public class TagNodeInsignificantBrCondition implements ITagNodeCondition {
 			}
 		}
 		return true;
+	}
+	@Override
+    public String toString() {
+	    return "TagNodeInsignificantBrCondition(<br> at start of a block)";
 	}
 }

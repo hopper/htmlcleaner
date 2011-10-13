@@ -38,7 +38,6 @@
 package org.htmlcleaner;
 
 import java.io.*;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -54,7 +53,7 @@ public abstract class XmlSerializer {
     public static final String END_CDATA = "]]>";
     public static final String SAFE_BEGIN_CDATA = "/*" + BEGIN_CDATA + "*/";
     public static final String SAFE_END_CDATA = "/*" + END_CDATA + "*/";
-    
+
     protected CleanerProperties props;
 	private boolean creatingHtmlDom;
 
@@ -144,24 +143,25 @@ public abstract class XmlSerializer {
 	}
 
 	/**
-	 * encapsulate content with <[CDATA[ ]]> for things like script and style elements
+	 * encapsulate content with <[CDATA[ ]]> for things like script and style elements.
+	 * But never escape style/script element content
 	 * @param tagNode
 	 * @return true if <[CDATA[ ]]> should be used.
 	 */
 	protected boolean dontEscape(TagNode tagNode) {
 	    // make sure <script src=..></script> doesn't get turned into <script src=..><[CDATA[]]></script>
 	    // TODO check for blank content as well.
-		return props.isUseCdataForScriptAndStyle() && isScriptOrStyle(tagNode) && !tagNode.isEmpty();
+		return isScriptOrStyle(tagNode)|| !tagNode.isEmpty();
 	}
 
 	protected boolean isScriptOrStyle(TagNode tagNode) {
 		String tagName = tagNode.getName();
 		return "script".equalsIgnoreCase(tagName) || "style".equalsIgnoreCase(tagName);
 	}
-	
+
 	protected boolean isHeadOrBody(String tagName) {
 		return "head".equalsIgnoreCase(tagName) || "body".equalsIgnoreCase(tagName);
-	}	
+	}
 
     protected boolean isMinimizedTagSyntax(TagNode tagNode) {
         final TagInfo tagInfo = props.getTagInfoProvider().getTagInfo(tagNode.getName());
@@ -172,22 +172,20 @@ public abstract class XmlSerializer {
     protected void serializeOpenTag(TagNode tagNode, Writer writer, boolean newLine) throws IOException {
         if ( !isForbiddenTag(tagNode)) {
             String tagName = tagNode.getName();
-            Map tagAtttributes = tagNode.getAttributes();
-            
+            Map<String, String> tagAtttributes = tagNode.getAttributes();
+
             // always have head and body in newline
             if (props.isAddNewlineToHeadAndBody() && isHeadOrBody(tagName)) {
             	writer.write("\n");
             }
-            
+
             writer.write("<" + tagName);
-            Iterator it = tagAtttributes.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry entry = (Map.Entry) it.next();
-                String attName = (String) entry.getKey();
-                String attValue = (String) entry.getValue();
+            for(Map.Entry<String, String> entry : tagAtttributes.entrySet()) {
+                String attName = entry.getKey();
+                String attValue = entry.getValue();
                 serializeAttribute(tagNode, writer, attName, attValue);
             }
-    
+
             if ( isMinimizedTagSyntax(tagNode) ) {
             	writer.write(" />");
             	if (newLine) {
@@ -197,7 +195,7 @@ public abstract class XmlSerializer {
                 // because we are not considering if the file is xhtml or html,
                 // we need to put a javascript comment in front of the CDATA in case this is NOT xhtml
                 writer.write(">");
-                if (!tagNode.getText().toString().startsWith(SAFE_BEGIN_CDATA)) {
+                if (props.isXml() && !tagNode.getText().toString().startsWith(SAFE_BEGIN_CDATA)) {
                 	writer.write(SAFE_BEGIN_CDATA);
                 }
             } else {
@@ -214,12 +212,12 @@ public abstract class XmlSerializer {
      */
     protected boolean isForbiddenTag(TagNode tagNode) {
         // null tagName when rootNode is a dummy node.
-        // this happens when omitting the html envelope elements ( <html>, <head>, <body> elements ) 
+        // this happens when omitting the html envelope elements ( <html>, <head>, <body> elements )
         String tagName = tagNode.getName();
         return tagName == null;
     }
     /**
-     * This allows overriding to eliminate forbidden attributes (for example javascript attributes onclick, onblur, etc. ) 
+     * This allows overriding to eliminate forbidden attributes (for example javascript attributes onclick, onblur, etc. )
      * @param writer
      * @param attName
      * @param attValue
@@ -247,19 +245,20 @@ public abstract class XmlSerializer {
         	if (dontEscape(tagNode)) {
                 // because we are not considering if the file is xhtml or html,
                 // we need to put a javascript comment in front of the CDATA in case this is NOT xhtml
-        		
-        		if (!tagNode.getText().toString().trim().endsWith(SAFE_END_CDATA))
-        			writer.write(SAFE_END_CDATA);
+
+        		if (!tagNode.getText().toString().trim().endsWith(SAFE_END_CDATA)) {
+                    writer.write(SAFE_END_CDATA);
+                }
         	}
-    
+
         	writer.write( "</" + tagName + ">" );
-    
+
             if (newLine) {
         		writer.write("\n");
         	}
     	}
     }
-    
+
     protected void serializeEndTag(TagNode tagNode, Writer writer) throws IOException {
     	serializeEndTag(tagNode, writer, true);
     }

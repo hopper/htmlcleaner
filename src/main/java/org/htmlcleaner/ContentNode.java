@@ -52,6 +52,10 @@ public class ContentNode extends BaseTokenImpl {
     private final boolean blank;
 
     public ContentNode(String content) {
+        this(content, -1, -1);
+    }
+    public ContentNode(String content,int row, int col) {
+        super(row, col);
         this.content = content;
         this.blank = Utils.isEmptyString(this.content);
     }

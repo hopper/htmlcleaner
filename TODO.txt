@@ -1,0 +1,5 @@
+ * replace <big> ( "big" depreciated for html5 ):
+   big equivalent to font-size:larger
+ * replace <tt> ("tt depreciated in html 5):
+   replace with <code> which seems to have the equivalent: {font-family: monospace;}
+ 

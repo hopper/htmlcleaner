@@ -51,6 +51,10 @@ public class CommentNode extends BaseTokenImpl {
     private String content;
 
     public CommentNode(String content) {
+        this(content, -1, -1);
+    }
+    public CommentNode(String content, int row, int col) {
+        super(row, col);
         this.content = content;
     }
 

@@ -55,17 +55,17 @@ public class SimpleXmlSerializer extends XmlSerializer {
 	public SimpleXmlSerializer(CleanerProperties props) {
         super(props);
     }
-	
+
 	protected void serializeContentToken(ContentNode item, TagNode tagNode, Writer writer) throws IOException {
 		String content = item.getContent();
 		String trimmed = content.trim();
-        boolean dontEscape = dontEscape(tagNode);                        
+        boolean dontEscape = dontEscape(tagNode);
     	if (trimmed.endsWith(SAFE_END_CDATA)) {
     		int pos = content.lastIndexOf(SAFE_END_CDATA);
     		String ending = content.substring(pos);
-    		if (dontEscape)
-    			writer.write( content.substring(0, pos).replaceAll("]]>", "]]&gt;") );
-    		else {
+    		if (dontEscape) {
+                writer.write( content.substring(0, pos).replaceAll("]]>", "]]&gt;") );
+            } else {
     			if (trimmed.startsWith(BEGIN_CDATA)) {
     				int actualStart = content.indexOf(BEGIN_CDATA) + BEGIN_CDATA.length();
     				writer.write(content.substring(0, actualStart));
@@ -76,12 +76,12 @@ public class SimpleXmlSerializer extends XmlSerializer {
     		}
     		writer.write(ending);
     	} else {
-    		if (dontEscape)
-    			writer.write( content.replaceAll("]]>", "]]&gt;") );
-    		else {
+    		if (dontEscape) {
+                writer.write( content.replaceAll("]]>", "]]&gt;") );
+            } else {
     			writer.write( escapeXml(content) );
     		}
-    	}		
+    	}
 	}
 
     @Override
@@ -90,9 +90,7 @@ public class SimpleXmlSerializer extends XmlSerializer {
 
         List tagChildren = tagNode.getChildren();
         if ( !isMinimizedTagSyntax(tagNode) ) {
-            Iterator childrenIt = tagChildren.iterator();
-            while ( childrenIt.hasNext() ) {
-                Object item = childrenIt.next();
+            for(Object item :tagChildren ) {
                 if (item != null) {
                     if ( item instanceof ContentNode ) {
                     	serializeContentToken((ContentNode)item, tagNode, writer);
